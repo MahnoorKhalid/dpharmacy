@@ -23,7 +23,7 @@
 	  border-radius: 4px;
 	  background-color: #555555;
 	  color: white;
-	  
+
 	}
 
 	.button5:hover {
@@ -35,5 +35,5 @@
 </style>
 <body>
 
-<a href="{% url 'phsys:receipt-download' id=p_id %}"><button class="button button5 right">Download</button></a>
+<a href="{% url 'phsys:receipt-download' id=sal.sbillno %}"><button class="button button5 right">Download</button></a>
 </body>

@@ -26,7 +26,7 @@ SECRET_KEY = 'wy4487l-7jwx!qqyp6fssaxb%(l^(q=_qt_jp$1&j+@ai0ml49'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_email_verification',
-    'bulma', 
+    'bulma',
     'invoice',
     'widget_tweaks',
     'home',

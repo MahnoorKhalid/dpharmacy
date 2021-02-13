@@ -20,6 +20,13 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.core.files.storage import FileSystemStorage
+from pyvirtualdisplay import Display
+from weasyprint import HTML, CSS
+from django.template.loader import get_template
+from pathlib import Path
+from django.conf import settings
+import os
+BASE_DIR = Path(__file__).resolve().parent.parent
 # Create your views here.
 
 #Home
@@ -31,10 +38,10 @@ def index(request):
     user=User.objects.all().count()
     cus=Customer.objects.all().count()
     med=Medicine.objects.all()
-    context = {'purchcount':purch, 
-                'salecount':sale, 
-                'usercount':user, 
-                'cuscount':cus, 
+    context = {'purchcount':purch,
+                'salecount':sale,
+                'usercount':user,
+                'cuscount':cus,
                 'medicine':med}
 
     return render(request,'indexan.html',context)
@@ -99,7 +106,7 @@ def addmed(request):
         med.save();
         messages.info(request,'Medicine Added')
         return redirect('phsys:addmed')
-      
+
     else:
         return render(request,'addmed.html')
 @login_required(login_url='login')
@@ -120,7 +127,7 @@ def addcus(request):
         cus.save();
         messages.info(request,'Customer Added')
         return redirect('phsys:addcus')
-      
+
     else:
         return render(request,'addcus.html')
 
@@ -209,7 +216,7 @@ def addpurchase(request):
 
         messages.info(request,'Purchase Added')
         return redirect('phsys:addpurchase')
-      
+
     else:
         return render(request,'addpurchase.html',  {'data1':d1, 'data':d, 'data2':d2})
 @login_required(login_url='login')
@@ -241,7 +248,7 @@ def addsale(request):
 
         messages.info(request,'Sale Added')
         return redirect('phsys:addsale')
-      
+
     else:
         return render(request,'addsale.html', {'data':d, 'data1':d1})
 @login_required(login_url='login')
@@ -261,7 +268,7 @@ def addmanu(request):
         manu.save();
         messages.info(request,'Manufacturer Added')
         return redirect('addmanu')
-      
+
     else:
         return render(request,'addmanu.html')
 
@@ -289,7 +296,7 @@ def update_med(request,pk):
 
         med.save()
 
-        return redirect("phsys:medicine")  
+        return redirect("phsys:medicine")
 
     return render(request, 'updatemed.html', {'med': med})
 @login_required(login_url='login')
@@ -307,12 +314,12 @@ def update_cus(request,pk):
         cus.cusid =cus_id
         cus.cus_name =cus_name
         cus.cus_address =cus_address
-        cus.cus_cont  =cus_cont 
+        cus.cus_cont  =cus_cont
         cus.cus_email =cus_email
 
         cus.save()
 
-        return redirect("phsys:customer")  
+        return redirect("phsys:customer")
 
     return render(request, 'updatecus.html', {'cus': cus})
 @login_required(login_url='login')
@@ -333,7 +340,7 @@ def update_manu(request,pk):
 
         manu.save()
 
-        return redirect("phsys:manufacturer")  
+        return redirect("phsys:manufacturer")
 
     return render(request, 'updatemanu.html', {'manu': manu})
 
@@ -342,37 +349,37 @@ def update_manu(request,pk):
 def delete_med(request,med_id):
     d_med=Medicine.objects.get(pk=med_id)
     d_med.delete()
-    
+
     return redirect('phsys:medicine')
 @allowed_users(allowed_roles=['Admin','Manager'])
 def delete_cus(request,cus_id):
     d_cus=Customer.objects.get(pk=cus_id)
     d_cus.delete()
-    
+
     return redirect('phsys:customer')
 @allowed_users(allowed_roles=['Admin','Manager'])
 def delete_manu(request,party_id):
     d_manu=Parties.objects.get(pk=party_id)
     d_manu.delete()
-    
+
     return redirect('phsys:manufacturer')
 @allowed_users(allowed_roles=['Admin','Manager'])
 def delete_purchase(request,purchase_id):
     d_pur=PurchaseMaster.objects.get(pk=purchase_id)
     d_pur.delete()
-    
+
     return redirect('phsys:purchase')
 @allowed_users(allowed_roles=['Admin','Manager'])
 def delete_sale(request,sale_id):
     d_sale=SalesMaster.objects.get(pk=sale_id)
     d_sale.delete()
-    
+
     return redirect('phsys:sale')
 @allowed_users(allowed_roles=['Admin','Manager'])
 def delete_user(request,usname):
     d_user=User.objects.get(username=usname)
     d_user.delete()
-    
+
     return redirect('phsys:users')
 
 
@@ -394,7 +401,7 @@ def customer(request):
 def users(request):
 
     user = GrpName.objects.all()
-    
+
     if request.method == 'POST':
         user_ids = request.POST.getlist("user_id")
         user_ids = list(map(int, user_ids))
@@ -404,9 +411,9 @@ def users(request):
 
         if status_id =='null' :
            d_user=AuthUserGroups.objects.get(user=us_id)
-           d_user.delete()     
+           d_user.delete()
            return redirect('phsys:users')
-           
+
         else:
             grp_id=AuthGroup.objects.get(id=status_id)
             if status_id == '1':
@@ -430,7 +437,7 @@ def users(request):
                 aug.group=grp_id
                 aug.save()
                 return redirect('phsys:users')
-            else:    
+            else:
                 us = AuthUserGroups(user=us_id, group= grp_id)
                 us.save();
                 return redirect('phsys:users')
@@ -453,13 +460,13 @@ def sale(request):
 
     context = { 'data': sal, 'data2':cusid}
     return render(request, 'sale.html', context)
-    
+
 @login_required(login_url='login')
 def search_med(request):
 
     medi = Medicine.objects.all()
     myFilter = MedicineFilter(request.GET, queryset=medi)
-    
+
 
     return render(request,'searchmed.html',{'myFilter':myFilter})
 
@@ -468,7 +475,7 @@ def search_cus(request):
 
     cus = Customer.objects.all()
     myFilter = CustomerFilter(request.GET, queryset=cus)
-    
+
 
     return render(request,'searchcus.html',{'myFilter':myFilter})
 
@@ -502,33 +509,35 @@ def purchasedetail_trial(request, id=None):
     }
     return render(request, 'purchase-template.html', context)
 
-def saledetail_trial(request, id=None):
-    #purch = PurchaseDetail.objects.get(pnofk=id)
-    showdetail = SalesDetails.objects.get(s_billnofk=id)
-    sale = SalesMaster.objects.get(sbillno=id)
-    #form = PurchaseDetailForm(instance=showdetail)
-    #purch = get_object_or_404(PurchaseMaster, pno=id)
-    #showdetail = purch.purchasedetail_set.all()
-    context = {
-        "company": {
-            "name": "Sales Detail",
-            "address" :"University of Engineering and Technology, Lahore",
-            "phone": "(+92) XXX XXXX",
-            "email": "contact@xyz.com",
-        },
+def saledetail_trial(request, id):
+            global s
+            #purch = PurchaseDetail.objects.get(pnofk=id)
+            showdetail = SalesDetails.objects.get(s_billnofk=id)
+            sale = SalesMaster.objects.get(sbillno=id)
+            #form = PurchaseDetailForm(instance=showdetail)
+            #purch = get_object_or_404(PurchaseMaster, pno=id)
+            #showdetail = purch.purchasedetail_set.all()
+            s=sale.sbillno
+            context = {
+                "company": {
+                    "name": "Sales Detail",
+                    "address" :"University of Engineering and Technology, Lahore",
+                    "phone": "(+92) XXX XXXX",
+                    "email": "contact@xyz.com",
+                },
 
-        "purch_pno": showdetail.s_billnofk,
-        "purch_party" :sale.cidfk,
-        "showdetail_no": showdetail.sale_id,
-        "purchasedate" : sale.s_date,
-        "showdetail" : showdetail,
-        "showdetail_total" : showdetail.net_rate,
-        "showdetail_m_idfk":showdetail.m_idfk,
-        "showdetail_m_sprice":showdetail.m_sprice,
-        "showdetail_dis_per":showdetail.dis_per,
-        "showdetail_qty":showdetail.qty,
-    }
-    return render(request, 'sale-template.html', context)
+                "purch_pno": showdetail.s_billnofk,
+                "purch_party" :sale.cidfk,
+                "showdetail_no": showdetail.sale_id,
+                "purchasedate" : sale.s_date,
+                "showdetail" : showdetail,
+                "showdetail_total" : showdetail.net_rate,
+                "showdetail_m_idfk":showdetail.m_idfk,
+                "showdetail_m_sprice":showdetail.m_sprice,
+                "showdetail_dis_per":showdetail.dis_per,
+                "showdetail_qty":showdetail.qty,
+            }
+            return render(request, 'sale-template.html', context)
 
 @login_required(login_url='login')
 def generate_PDF_purchase(request, id):
@@ -570,6 +579,7 @@ def generate_PDF_receipt(request,id):
     return response
 
 
+
 @login_required(login_url='login')
 def manufacturer(request):
 
@@ -603,8 +613,8 @@ def receipt(request):
     par = Parties.objects.get(party_id=d)
     context = {
         'all':pay,
-        'data':par.par_name, 
-        'address':par.par_address, 
+        'data':par.par_name,
+        'address':par.par_address,
         'cont': par.contact,
         'p_id':pay.p_id,
         'ptype':pay.remarks,
@@ -619,8 +629,8 @@ def receipt_pdf(request):
     par = Parties.objects.get(party_id=d)
     context = {
         'all':pay,
-        'data':par.par_name, 
-        'address':par.par_address, 
+        'data':par.par_name,
+        'address':par.par_address,
         'cont': par.contact,
         'p_id':pay.p_id,
         'ptype':pay.remarks,
@@ -633,4 +643,3 @@ def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
     return redirect("login")
-

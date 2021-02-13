@@ -2,6 +2,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: center;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -29,17 +46,33 @@
                             <span toggle="#password" class="zmdi zmdi-eye-off field-icon toggle-password"></span>
                         </div>
                         <h2 class="form-title">Use these credentials to log in</h2>
-                        <div class="form-group" >
-                            <input type="text" style="text-align: center" class="form-input" value="Username: Admin | Password: 1234" readonly="" />
-                        </div>
                         <div class="form-group">
-                            <input type="text" style="text-align: center" class="form-input" value="Username: Manager | Password: 1234" readonly="" />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" style="text-align: center" class="form-input" value="Username: Sales Person Password: 1234" readonly="" />
+                            <table class='format'>
+                              <tr>
+                                <th>Username</th>
+                                <th>Pasword</th>
+                                <th>Role</th>
+                              </tr>
+                              <tr>
+                                <td>Mahnoor</td>
+                                <td>1234</td>
+                                <td>Admin</td>
+                              </tr>
+                              <tr>
+                                <td>Arif</td>
+                                <td>1234</td>
+                                <td>Manager</td>
+                              </tr>
+                              <tr>
+                                <td>Guest</td>
+                                <td>1234</td>
+                                <td>Sales Person</td>
+                              </tr>
+                              
+                            </table>
                         </div>
                          <div class="form-group">
-                            <input type="submit" name="submit" id="submit" class="form-submit" value="Sign in"/>
+                            <input type="submit" name="submit" id="submit" style="cursor: pointer;" class="form-submit" value="Sign in"/>
                         </div>
                         <div>
                             {% for message in messages %}

@@ -7,7 +7,25 @@
 <head>
  <head>
 	<style>
-	
+	.caret {
+	  cursor: pointer;
+	  -webkit-user-select: none; /* Safari 3.1+ */
+	  -moz-user-select: none; /* Firefox 2+ */
+	  -ms-user-select: none; /* IE 10+ */
+	  user-select: none;
+	}
+
+	.fa-angle-left{
+	  transform: rotate(0deg);
+	}
+
+	.notokay{
+	  transform: rotate(-90deg);
+	}
+
+	.treeview-menu {
+	  display: none;
+	}
 	.right {
 	  position: absolute;
   	  right: 40px;
@@ -30,7 +48,7 @@
 	  border-radius: 4px;
 	  background-color: #555555;
 	  color: white;
-	  
+
 	}
 
 	.button5:hover {
@@ -45,9 +63,9 @@
 	<title>Medicine List</title>
 	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 	<link href= 'https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900' rel="stylesheet">
-		
+
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	{% load static %}
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
@@ -89,5 +107,5 @@
 		</td>
 	</tr>
 	{% endfor %}
-	<tbody> 
+	<tbody>
 </body>
